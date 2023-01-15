@@ -47,19 +47,6 @@ app.post('/interactions', async function (req, res) {
     var command = cmdList.find(c => c.name==name)
     console.log("command: "+command)
     command.func(req, res, id)
-
-    // if (name === 'pzserver' && id) {
-    //   var command = cmdList.find(c => c.name=='pzserver')
-    //   command.func(req, res, id)
-    //   console.log(command)
-    // }
-    
-    // // "test" guild command
-    // if (name === 'test1') {
-    //   // Send a message into the channel where command was triggered from
-    //   var command = cmdList.find(c => c.name=='test1')
-    //   console.log(command)
-    // }
   }
   
   // if (type === InteractionType.MESSAGE_COMPONENT) {
