@@ -1,8 +1,16 @@
 import { getRPSChoices } from './game.js';
 import { getPZChoices } from './spiffo.js';
-import { capitalize, DiscordRequest } from './utils.js';
+import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest, capitalize } from './utils.js';
+import { getShuffledOptions, getResult } from './game.js';
+import {
+  InteractionType,
+  InteractionResponseType,
+  InteractionResponseFlags,
+  MessageComponentTypes,
+  ButtonStyleTypes,
+} from 'discord-interactions';
 
-export async function HasGuildCommands(appId, guildId, commands) {
+export async function HasGuildCommands(appId, guildId) {
   if (guildId === '' || appId === '') return;
   // API endpoint to get and post guild commands
   const endpoint = `applications/${appId}/guilds/${guildId}/commands`;
@@ -13,7 +21,7 @@ export async function HasGuildCommands(appId, guildId, commands) {
 
     if (data) {
       const installedNames = data.map((c) => c['name']);
-      const toInstall = commands.map((c) => c['name'])
+      const toInstall = cmdList.map((c) => c['name'])
       installedNames.forEach(function(command) {
         // If command is installed on server but not in commands.js, delete it from the server
         if (!toInstall.includes(command)) {
@@ -119,10 +127,48 @@ export const cmdList = [
   {
     name: 'test1',
     description: 'Basic guild command',
+    func: function(req, res, id) {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: 'hello world ' + getRandomEmoji(),
+        },
+      });
+    },
     type: 1,
-  }, {
+  },
+  {
     name: 'pzserver',
     description: 'Manage the servers Project Zomboid Server Container',
+    func: function(req, res, id) {
+      const userId = req.body.member.user.id;
+      // User's object choice
+      const objectName = req.body.data.options[0].value;
+
+
+      return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+          // Fetches a random emoji to send from a helper function
+          content: `PZServer Test <@${userId}>`,
+          components: [
+          {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+              {
+                  type: MessageComponentTypes.BUTTON,
+                  // Append the game ID to use later on
+                  custom_id: `accept_button_${req.body.id}`,
+                  label: 'WIP',
+                  style: ButtonStyleTypes.PRIMARY,
+              },
+              ],
+          },
+          ],
+      },
+      });
+  },
     options: [
       {
         type: 3,
@@ -133,18 +179,54 @@ export const cmdList = [
       },
     ],
     type: 1,
-  },{
-    name: 'challenge',
-    description: 'Challenge to a match of rock paper scissors',
-    options: [
-      {
-        type: 3,
-        name: 'object',
-        description: 'Pick your object',
-        required: true,
-        choices: createCommandChoices(),
-      },
-    ],
-    type: 1,
-  }
+  },
+  // {
+  //   name: 'challenge',
+  //   description: 'Challenge to a match of rock paper scissors',
+  //   func: function(req,id){
+  //       {
+  //         const userId = req.body.member.user.id;
+  //         // User's object choice
+  //         const objectName = req.body.data.options[0].value;
+
+  //         // Create active game using message ID as the game ID
+  //         activeGames[id] = {
+  //             id: userId,
+  //             objectName,
+  //         };
+
+  //         return res.send({
+  //         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+  //         data: {
+  //             // Fetches a random emoji to send from a helper function
+  //             content: `Rock papers scissors challenge from <@${userId}>`,
+  //             components: [
+  //             {
+  //                 type: MessageComponentTypes.ACTION_ROW,
+  //                 components: [
+  //                 {
+  //                     type: MessageComponentTypes.BUTTON,
+  //                     // Append the game ID to use later on
+  //                     custom_id: `accept_button_${req.body.id}`,
+  //                     label: 'Accept',
+  //                     style: ButtonStyleTypes.PRIMARY,
+  //                 },
+  //                 ],
+  //             },
+  //             ],
+  //         },
+  //         });
+  //     }
+  //   },
+  //   options: [
+  //     {
+  //       type: 3,
+  //       name: 'object',
+  //       description: 'Pick your object',
+  //       required: true,
+  //       choices: createCommandChoices(),
+  //     },
+  //   ],
+  //   type: 1,
+  // }
 ]
