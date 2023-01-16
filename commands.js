@@ -9,7 +9,7 @@ import {
   MessageComponentTypes,
   ButtonStyleTypes,
 } from 'discord-interactions';
-
+import { exec }from 'node:child_process';
 export async function HasGuildCommands(appId, guildId) {
   if (guildId === '' || appId === '') return;
   // API endpoint to get and post guild commands
@@ -145,27 +145,22 @@ export const cmdList = [
       const userId = req.body.member.user.id;
       // User's object choice
       const objectName = req.body.data.options[0].value;
-
-
+      console.log("objectName: "+objectName)
+      exec('docker restart zomboid-dedicated-server',(err, output) => {
+        // once the command has completed, the callback function is called
+        if (err) {
+          // log and return if we encounter an error
+          console.error("could not execute command: ", err)
+          return
+        }
+        // log the output received from the command
+        console.log("Output: \n", output) 
+      })
       return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
           // Fetches a random emoji to send from a helper function
-          content: `PZServer Test <@${userId}>`,
-          components: [
-          {
-              type: MessageComponentTypes.ACTION_ROW,
-              components: [
-              {
-                  type: MessageComponentTypes.BUTTON,
-                  // Append the game ID to use later on
-                  custom_id: `accept_button_${req.body.id}`,
-                  label: 'WIP',
-                  style: ButtonStyleTypes.PRIMARY,
-              },
-              ],
-          },
-          ],
+          content: `SERVER RESTART INITIATED BY <@${userId}>`,
       },
       });
   },

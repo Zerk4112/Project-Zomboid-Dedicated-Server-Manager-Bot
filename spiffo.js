@@ -2,6 +2,7 @@
 const PZChoices = {
     restart: {
       description: 'Restart the container',
+      func: function() {}
     }
   };
   
