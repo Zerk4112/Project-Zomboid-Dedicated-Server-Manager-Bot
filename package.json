@@ -1,7 +1,7 @@
 {
-    "name": "discord-getting-started",
+    "name": "project zomboid discord bot",
     "version": "1.0.0",
-    "description": "Basic Discord app using interactions",
+    "description": "Simple Discord App to allow RCON integration with Project Zomboid",
     "main": "app.js",
     "type": "module",
     "scripts": {
