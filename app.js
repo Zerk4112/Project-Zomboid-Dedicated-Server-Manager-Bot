@@ -8,7 +8,6 @@ import {
   ButtonStyleTypes,
 } from 'discord-interactions';
 import { VerifyDiscordRequest} from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
 import {
   cmdList,
   HasGuildCommands,
