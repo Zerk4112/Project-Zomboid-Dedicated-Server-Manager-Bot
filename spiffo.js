@@ -17,11 +17,8 @@ const PZChoices = {
     func: async function(req, res, id) {
       const userId = req.body.member.user.id;
       var output = await getRconInfo("quit")
-      console.log("rcon cmd output: "+output)
-      let result = chunkString(output, 2000)
-      console.log(result)
       
-      return `<@${userId}>: ${result}`
+      return `<@${userId}>:\n ${output} command received successfully`
     }
   },
   players: {
@@ -30,42 +27,21 @@ const PZChoices = {
       const userId = req.body.member.user.id;
       var output = await getRconInfo("players")
       console.log("rcon cmd output: "+output)
-      let result = chunkString(output, 2000)
-      console.log(result)
       
-      return `<@${userId}>: ${result}`
-      // return Promise.resolve("test")
-      
+      return `<@${userId}>:\n ${output}`
     }
   },
   save: {
     description: 'Save the current world.',
     func: async function(req, res, id) {
       const userId = req.body.member.user.id;
-      var output = await getRconInfo("help")
+      var output = await getRconInfo("save")
       console.log("rcon cmd output: "+output)
-      let result = chunkString(output, 2000)
-      console.log(result)
       
-      return `<@${userId}>: ${result}`
-      // return Promise.resolve("test")
-      
+      return `<@${userId}>:\n ${output}`
     }
   },
-  save: {
-    description: 'Save the current world.',
-    func: async function(req, res, id) {
-      const userId = req.body.member.user.id;
-      var output = await getRconInfo("help")
-      console.log("rcon cmd output: "+output)
-      let result = chunkString(output, 2000)
-      console.log(result)
-      
-      return `<@${userId}>: ${result}`
-      // return Promise.resolve("test")
-      
-    }
-  }
+
 };
   
 async function getRconInfo(cmd) {
