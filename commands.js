@@ -1,7 +1,5 @@
-import { getRPSChoices } from './game.js';
 import { getPZChoicesList, getPZChoices } from './spiffo.js';
 import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest, capitalize } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
 import {
   InteractionType,
   InteractionResponseType,
