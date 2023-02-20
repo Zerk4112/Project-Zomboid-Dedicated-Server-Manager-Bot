@@ -16,7 +16,7 @@
 - [Git](https://git-scm.com/downloads)
 - [Cloud Flare Tunnel - cloudflared (optional)](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/)
 
-## 🚀 Getting Started
+## 🚜 Getting Started
 
 - Open the terminal and run the following commands
 
